@@ -216,3 +216,47 @@ footer {
 
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-thumb { background: rgba(167, 139, 250, 0.4); border-radius: 3px; }
+
+/* ========== 自定义面包屑导航 ========== */
+.breadcrumb-custom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    font-size: 0.95rem;
+}
+
+.bread-crumb-link {
+    color: #a78bfa;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.25s;
+    padding: 4px 10px;
+    border-radius: 10px;
+}
+.bread-crumb-link:hover {
+    background: rgba(167, 139, 250, 0.12);
+    color: #7c3aed;
+    transform: scale(1.05);
+}
+
+.bread-crumb-current {
+    color: #f472b6;
+    font-weight: 700;
+    padding: 4px 10px;
+    background: rgba(244, 114, 182, 0.08);
+    border-radius: 10px;
+    pointer-events: none;
+}
+
+.bread-sep {
+    color: rgba(167, 139, 250, 0.4);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+}

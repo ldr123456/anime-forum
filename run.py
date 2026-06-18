@@ -1,4 +1,5 @@
 import os
+import sqlite3
 from waitress import serve
 from app import app, db
 from database import Category
@@ -6,6 +7,21 @@ from database import Category
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
+
+        # 自动迁移：为已有 users 表添加 nickname 列
+        try:
+            db_path = os.path.join(app.instance_path, 'data.db')
+            conn = sqlite3.connect(db_path)
+            cursor = conn.execute("PRAGMA table_info(users)")
+            cols = [row[1] for row in cursor.fetchall()]
+            if 'nickname' not in cols:
+                conn.execute("ALTER TABLE users ADD COLUMN nickname VARCHAR(30) DEFAULT ''")
+                conn.commit()
+                print("自动迁移：users 表已添加 nickname 列")
+            conn.close()
+        except Exception as e:
+            print(f"迁移检查跳过：{e}")
+
         print("数据库表创建完成")
 
         # 插入预设分类（仅在分类表为空时）

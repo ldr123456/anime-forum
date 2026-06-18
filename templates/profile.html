@@ -25,6 +25,12 @@
                 <h5 class="gradient-text mb-3"><i class="bi bi-gear"></i> 编辑资料</h5>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
+                        <label class="form-label fw-bold" style="color: #2d1b4e;">昵称</label>
+                        <input type="text" name="nickname" class="form-control" value="{{ current_user.nickname }}"
+                               placeholder="你的二次元网名" maxlength="30">
+                        <small style="color: #7b6b9e;">登录名 @{{ current_user.username }} 不可修改</small>
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label fw-bold" style="color: #2d1b4e;">头像</label>
                         <input type="file" name="avatar" class="form-control" accept="image/*">
                         <small style="color: #7b6b9e;">支持 PNG/JPG/GIF/WebP，最大 16MB</small>

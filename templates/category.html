@@ -36,7 +36,7 @@
                 <img src="{{ url_for('static', filename='uploads/avatars/' + post.author.avatar) }}"
                      class="rounded-circle me-1" width="18" height="18"
                      onerror="this.style.display='none'">
-                {{ post.author.username }}
+                {{ post.author.nickname or post.author.username }}
                 <span class="ms-2">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
             </small>
             <small style="color: #7b6b9e;"><i class="bi bi-chat-dots"></i> {{ post.comments.count() }}</small>

@@ -95,6 +95,7 @@ def register():
         return redirect(url_for('index'))
     if request.method == 'POST':
         username = request.form.get('username', '').strip()
+        nickname = request.form.get('nickname', '').strip()
         email = request.form.get('email', '').strip()
         password = request.form.get('password', '').strip()
         confirm = request.form.get('confirm', '').strip()
@@ -105,11 +106,11 @@ def register():
         elif len(password) < 6:
             flash('密码长度至少为6位。', 'danger')
         elif User.query.filter_by(username=username).first():
-            flash('该用户名已被注册。', 'danger')
+            flash('该登录名已被注册。', 'danger')
         elif User.query.filter_by(email=email).first():
             flash('该邮箱已被注册。', 'danger')
         else:
-            user = User(username=username, email=email)
+            user = User(username=username, nickname=nickname, email=email)
             user.set_password(password)
             db.session.add(user)
             db.session.commit()
@@ -128,7 +129,7 @@ def login():
         user = User.query.filter_by(username=username).first()
         if user and user.check_password(password):
             login_user(user, remember=remember)
-            flash(f'欢迎回来，{user.username}！', 'success')
+            flash(f'欢迎回来，{user.nickname or user.username}！', 'success')
             next_page = request.args.get('next')
             return redirect(next_page or url_for('index'))
         else:
@@ -146,8 +147,10 @@ def logout():
 @login_required
 def profile():
     if request.method == 'POST':
+        nickname = request.form.get('nickname', '').strip()
         bio = request.form.get('bio', '').strip()
         theme_color = request.form.get('theme_color', '#6c5ce7').strip()
+        current_user.nickname = nickname
         current_user.bio = bio
         current_user.theme_color = theme_color
         file = request.files.get('avatar')

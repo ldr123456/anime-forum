@@ -2,12 +2,18 @@
 {% block title %}{{ post.title }} - 二次元交流站{% endblock %}
 {% block content %}
 
-<nav aria-label="breadcrumb" class="mb-3">
-    <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">首页</a></li>
-        <li class="breadcrumb-item"><a href="{{ url_for('category', cat_id=post.category.id) }}">{{ post.category.name }}</a></li>
-        <li class="breadcrumb-item active">帖子详情</li>
-    </ol>
+<nav aria-label="breadcrumb" class="mb-4">
+    <div class="breadcrumb-custom">
+        <a href="{{ url_for('index') }}" class="bread-crumb-link">
+            <i class="bi bi-house-heart"></i> 首页
+        </a>
+        <span class="bread-sep"><i class="bi bi-chevron-right"></i></span>
+        <a href="{{ url_for('category', cat_id=post.category.id) }}" class="bread-crumb-link">
+            {{ post.category.icon }} {{ post.category.name }}
+        </a>
+        <span class="bread-sep"><i class="bi bi-chevron-right"></i></span>
+        <span class="bread-crumb-current">帖子详情</span>
+    </div>
 </nav>
 
 <div class="glass-card mb-4">
@@ -54,7 +60,7 @@
                          class="avatar-img me-2" width="32" height="32"
                          onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ comment.author.username }}'">
                     <div class="flex-grow-1">
-                        <strong style="color: #2d1b4e;">{{ comment.author.username }}</strong>
+                        <strong style="color: #2d1b4e;">{{ comment.author.nickname or comment.author.username }}</strong>
                         <small style="color: #7b6b9e;" class="ms-2">{{ comment.created_at.strftime('%m-%d %H:%M') }}</small>
                         <p class="mt-2 mb-0" style="color: #2d1b4e;">{{ comment.content }}</p>
                     </div>
