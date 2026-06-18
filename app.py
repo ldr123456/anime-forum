@@ -165,6 +165,28 @@ def profile():
     user_posts = Post.query.filter_by(user_id=current_user.id).order_by(Post.created_at.desc()).limit(10).all()
     return render_template('profile.html', posts=user_posts)
 
+@app.route('/create_category', methods=['GET', 'POST'])
+@login_required
+def create_category():
+    if request.method == 'POST':
+        name = request.form.get('name', '').strip()
+        description = request.form.get('description', '').strip()
+        icon = request.form.get('icon', '📌').strip()
+        cat_type = request.form.get('cat_type', 'game').strip()
+        if not name:
+            flash('分类名称不能为空。', 'danger')
+        elif cat_type not in ('game', 'anime'):
+            flash('请选择有效的类型。', 'danger')
+        elif Category.query.filter_by(name=name, cat_type=cat_type).first():
+            flash(f'该类型下已存在分类「{name}」，请勿重复创建。', 'warning')
+        else:
+            cat = Category(name=name, description=description, icon=icon, cat_type=cat_type)
+            db.session.add(cat)
+            db.session.commit()
+            flash(f'分类「{name}」创建成功！', 'success')
+            return redirect(url_for('index'))
+    return render_template('create_category.html')
+
 @app.route('/api/theme', methods=['POST'])
 @login_required
 def update_theme():

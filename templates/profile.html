@@ -4,73 +4,67 @@
 
 <div class="row">
     <div class="col-md-4">
-        <div class="card shadow-sm mb-4">
-            <div class="card-body text-center">
+        <div class="glass-card mb-4">
+            <div class="card-body text-center py-5">
                 <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar) }}"
-                     class="rounded-circle mb-3" width="120" height="120"
+                     class="avatar-img mb-3" width="120" height="120"
                      onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ current_user.username }}'">
-                <h4>{{ current_user.username }}</h4>
-                <p class="text-muted">{{ current_user.email }}</p>
-                <p class="text-muted small">注册于 {{ current_user.created_at.strftime('%Y-%m-%d') }}</p>
+                <h4 class="gradient-text">{{ current_user.username }}</h4>
+                <p style="color: #7b6b9e;">{{ current_user.email }}</p>
+                <p class="small" style="color: #7b6b9e;">注册于 {{ current_user.created_at.strftime('%Y-%m-%d') }}</p>
                 {% if current_user.bio %}
-                <p class="mt-2">{{ current_user.bio }}</p>
+                <p class="mt-2" style="color: #2d1b4e;">{{ current_user.bio }}</p>
                 {% endif %}
             </div>
         </div>
     </div>
 
     <div class="col-md-8">
-        <div class="card shadow-sm mb-4">
-            <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-gear text-theme"></i> 编辑资料</h5>
-            </div>
-            <div class="card-body">
+        <div class="glass-card mb-4">
+            <div class="card-body p-4">
+                <h5 class="gradient-text mb-3"><i class="bi bi-gear"></i> 编辑资料</h5>
                 <form method="POST" enctype="multipart/form-data">
                     <div class="mb-3">
-                        <label class="form-label">头像</label>
+                        <label class="form-label fw-bold" style="color: #2d1b4e;">头像</label>
                         <input type="file" name="avatar" class="form-control" accept="image/*">
-                        <small class="text-muted">支持 PNG/JPG/GIF/WebP，最大 16MB</small>
+                        <small style="color: #7b6b9e;">支持 PNG/JPG/GIF/WebP，最大 16MB</small>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">个人简介</label>
+                        <label class="form-label fw-bold" style="color: #2d1b4e;">个人简介</label>
                         <textarea name="bio" class="form-control" rows="3" maxlength="500">{{ current_user.bio }}</textarea>
                     </div>
                     <div class="mb-3">
-                        <label class="form-label">主题颜色</label>
+                        <label class="form-label fw-bold" style="color: #2d1b4e;">主题颜色</label>
                         <div class="input-group">
                             <input type="color" name="theme_color" class="form-control form-control-color"
-                                   value="{{ current_user.theme_color }}" title="选择主题颜色">
+                                   value="{{ current_user.theme_color }}" title="选择主题颜色" style="width: 50px;">
                             <input type="text" class="form-control" id="themeColorText"
                                    value="{{ current_user.theme_color }}" readonly>
-                            <button type="button" class="btn btn-outline-secondary" onclick="randomColor()">
+                            <button type="button" class="btn btn-outline-gradient" onclick="randomColor()">
                                 <i class="bi bi-shuffle"></i> 随机
                             </button>
                         </div>
-                        <small class="text-muted">设置后，整个网站将以你选择的颜色为主题色</small>
+                        <small style="color: #7b6b9e;">设置后，整个网站将以你选择的颜色为主题色</small>
                     </div>
-                    <button type="submit" class="btn btn-theme">保存修改</button>
+                    <button type="submit" class="btn btn-gradient">保存修改</button>
                 </form>
             </div>
         </div>
 
-        <div class="card shadow-sm">
-            <div class="card-header bg-white">
-                <h5 class="mb-0"><i class="bi bi-file-text text-theme"></i> 我的帖子</h5>
-            </div>
-            <div class="card-body">
+        <div class="glass-card">
+            <div class="card-body p-4">
+                <h5 class="gradient-text mb-3"><i class="bi bi-file-text"></i> 我的帖子</h5>
                 {% if posts %}
-                <div class="list-group list-group-flush">
-                    {% for p in posts %}
-                    <a href="{{ url_for('view_post', post_id=p.id) }}" class="list-group-item list-group-item-action">
-                        <div class="d-flex justify-content-between">
-                            <span>{{ p.title }}</span>
-                            <small class="text-muted">{{ p.created_at.strftime('%m-%d') }}</small>
-                        </div>
-                    </a>
-                    {% endfor %}
-                </div>
+                {% for p in posts %}
+                <a href="{{ url_for('view_post', post_id=p.id) }}" class="post-item">
+                    <div class="d-flex justify-content-between align-items-center">
+                        <span class="fw-bold" style="color: #2d1b4e;">{{ p.title }}</span>
+                        <small style="color: #7b6b9e;">{{ p.created_at.strftime('%m-%d') }}</small>
+                    </div>
+                </a>
+                {% endfor %}
                 {% else %}
-                <p class="text-muted text-center py-3 mb-0">还没有发布过帖子</p>
+                <p style="color: #7b6b9e;" class="text-center py-3 mb-0">还没有发布过帖子</p>
                 {% endif %}
             </div>
         </div>

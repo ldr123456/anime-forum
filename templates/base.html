@@ -26,7 +26,7 @@
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-theme shadow-sm">
+    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="{{ url_for('index') }}">
                 <i class="bi bi-stars"></i> 二次元交流站
@@ -42,10 +42,15 @@
                                 <i class="bi bi-plus-circle"></i> 发帖
                             </a>
                         </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ url_for('create_category') }}">
+                                <i class="bi bi-folder-plus"></i> 创建分类
+                            </a>
+                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
                                 <img src="{{ url_for('static', filename='uploads/avatars/' + current_user.avatar) }}"
-                                     class="rounded-circle me-1" width="28" height="28"
+                                     class="avatar-img me-1" width="30" height="30"
                                      onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ current_user.username }}'">
                                 {{ current_user.username }}
                             </a>
@@ -81,10 +86,10 @@
         {% block content %}{% endblock %}
     </main>
 
-    <footer class="bg-dark text-light py-4 mt-5">
-        <div class="container text-center">
-            <p class="mb-1">二次元交流站 - 属于每一位二次元爱好者的社区</p>
-            <small class="text-muted">&copy; 2024 Anime Forum. Powered by Flask.</small>
+    <footer class="py-4 mt-5 text-center">
+        <div class="container">
+            <p class="mb-1 fw-bold gradient-text">二次元交流站</p>
+            <small>属于每一位二次元爱好者的社区</small>
         </div>
     </footer>
 

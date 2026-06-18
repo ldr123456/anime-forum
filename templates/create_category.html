@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}创建分类 - 二次元交流站{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card glass-card">
+            <div class="card-body p-4">
+                <h3 class="text-center mb-4">
+                    <span class="gradient-text">✨ 创建新分类</span>
+                </h3>
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">分类名称</label>
+                        <input type="text" name="name" class="form-control form-control-lg" required
+                               placeholder="例如：蔚蓝档案、EVA...">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">类型</label>
+                        <div class="d-flex gap-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cat_type" value="game" id="typeGame" checked>
+                                <label class="form-check-label" for="typeGame">🎮 游戏</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="cat_type" value="anime" id="typeAnime">
+                                <label class="form-check-label" for="typeAnime">📺 番剧</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">图标（Emoji）</label>
+                        <input type="text" name="icon" class="form-control" value="📌" maxlength="5"
+                               placeholder="选择一个 Emoji 作为图标">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-bold">简介</label>
+                        <textarea name="description" class="form-control" rows="3"
+                                  placeholder="一句话介绍这个分类..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-gradient w-100 btn-lg">
+                        <i class="bi bi-plus-circle"></i> 创建分类
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
