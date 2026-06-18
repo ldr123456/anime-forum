@@ -160,6 +160,25 @@ def logout():
 @login_required
 def profile():
     if request.method == 'POST':
+        # 密码修改逻辑
+        new_password = request.form.get('new_password', '').strip()
+        if new_password:
+            current_password = request.form.get('current_password', '').strip()
+            if not current_user.check_password(current_password):
+                flash('当前密码错误。', 'danger')
+                return redirect(url_for('profile'))
+            if len(new_password) < 6:
+                flash('新密码长度至少为6位。', 'danger')
+                return redirect(url_for('profile'))
+            confirm_password = request.form.get('confirm_password', '').strip()
+            if new_password != confirm_password:
+                flash('两次输入的新密码不一致。', 'danger')
+                return redirect(url_for('profile'))
+            current_user.set_password(new_password)
+            db.session.commit()
+            flash('密码修改成功！', 'success')
+            return redirect(url_for('profile'))
+
         nickname = request.form.get('nickname', '').strip()
         bio = request.form.get('bio', '').strip()
         theme_color = request.form.get('theme_color', '#6c5ce7').strip()
