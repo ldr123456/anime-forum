@@ -1,0 +1,49 @@
+/* 二次元交流站 - 全局样式 */
+
+body {
+    font-family: "Microsoft YaHei", "PingFang SC", "Helvetica Neue", sans-serif;
+    background-color: #f8f9fa;
+}
+
+.hover-card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    border-width: 2px;
+}
+.hover-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+}
+
+.card {
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.post-content {
+    font-size: 1.05rem;
+}
+
+/* 评论区头像 */
+.comment-avatar {
+    flex-shrink: 0;
+}
+
+/* 分页样式 */
+.page-link {
+    color: var(--theme-color);
+}
+.page-item.active .page-link {
+    background-color: var(--theme-color);
+    border-color: var(--theme-color);
+}
+
+/* 滚动条美化 */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-thumb { background: #ccc; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #999; }
+
+/* 响应式 */
+@media (max-width: 576px) {
+    .display-4 { font-size: 2rem; }
+    h1 { font-size: 1.5rem; }
+}

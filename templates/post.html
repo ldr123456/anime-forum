@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - 二次元交流站{% endblock %}
+{% block content %}
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('index') }}">首页</a></li>
+        <li class="breadcrumb-item"><a href="{{ url_for('category', cat_id=post.category.id) }}">{{ post.category.name }}</a></li>
+        <li class="breadcrumb-item active">帖子详情</li>
+    </ol>
+</nav>
+
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-white d-flex align-items-center">
+        <img src="{{ url_for('static', filename='uploads/avatars/' + post.author.avatar) }}"
+             class="rounded-circle me-2" width="40" height="40"
+             onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ post.author.username }}'">
+        <div>
+            <strong>{{ post.author.username }}</strong>
+            <br><small class="text-muted">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
+        </div>
+        <span class="badge bg-theme ms-auto">{{ post.category.icon }} {{ post.category.name }}</span>
+    </div>
+    <div class="card-body">
+        <h3 class="card-title">{{ post.title }}</h3>
+        <hr>
+        <div class="post-content" style="white-space: pre-wrap; line-height: 1.8;">{{ post.content }}</div>
+    </div>
+</div>
+
+<!-- 评论区 -->
+<div class="card shadow-sm">
+    <div class="card-header bg-white">
+        <h5 class="mb-0"><i class="bi bi-chat-dots text-theme"></i> 评论 ({{ comments|length }})</h5>
+    </div>
+    <div class="card-body">
+        {% if current_user.is_authenticated %}
+        <form method="POST" class="mb-4">
+            <div class="mb-2">
+                <textarea name="content" class="form-control" rows="3" placeholder="写下你的评论..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-theme"><i class="bi bi-send"></i> 发表评论</button>
+        </form>
+        <hr>
+        {% else %}
+        <div class="alert alert-light text-center mb-4">
+            <a href="{{ url_for('login') }}">登录</a> 后即可参与评论
+        </div>
+        {% endif %}
+
+        {% if comments %}
+            {% for comment in comments %}
+            <div class="d-flex mb-3 pb-3 border-bottom">
+                <img src="{{ url_for('static', filename='uploads/avatars/' + comment.author.avatar) }}"
+                     class="rounded-circle me-2" width="36" height="36"
+                     onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ comment.author.username }}'">
+                <div class="flex-grow-1">
+                    <div>
+                        <strong>{{ comment.author.username }}</strong>
+                        <small class="text-muted ms-2">{{ comment.created_at.strftime('%m-%d %H:%M') }}</small>
+                    </div>
+                    <p class="mb-0 mt-1">{{ comment.content }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-muted text-center py-3 mb-0">暂无评论，来抢沙发吧~</p>
+        {% endif %}
+    </div>
+</div>
+
+{% endblock %}
