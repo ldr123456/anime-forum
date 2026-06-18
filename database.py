@@ -14,6 +14,7 @@ class User(UserMixin, db.Model):
     password_hash = db.Column(db.String(256), nullable=False)
     avatar = db.Column(db.String(256), default='default.png')
     bio = db.Column(db.Text, default='')
+    is_admin = db.Column(db.Boolean, default=False)
     theme_color = db.Column(db.String(20), default='#6c5ce7')
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     posts = db.relationship('Post', backref='author', lazy='dynamic', cascade='all, delete-orphan')

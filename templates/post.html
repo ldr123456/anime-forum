@@ -21,9 +21,9 @@
         <div class="d-flex align-items-center mb-3">
             <img src="{{ url_for('static', filename='uploads/avatars/' + post.author.avatar) }}"
                  class="avatar-img me-3" width="44" height="44"
-                 onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ post.author.username }}'">
+                 onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ post.author.nickname or post.author.username }}'">
             <div>
-                <strong style="color: #2d1b4e;">{{ post.author.username }}</strong>
+                <strong style="color: #2d1b4e;">{{ post.author.nickname or post.author.username }}</strong>
                 <br><small style="color: #7b6b9e;">{{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</small>
             </div>
             <span class="badge badge-anime ms-auto">{{ post.category.icon }} {{ post.category.name }}</span>
@@ -31,6 +31,16 @@
         <h3 class="gradient-text mb-3">{{ post.title }}</h3>
         <hr style="border-color: rgba(167,139,250,0.2);">
         <div style="white-space: pre-wrap; line-height: 1.9; color: #2d1b4e;">{{ post.content }}</div>
+        {% if current_user.is_authenticated and current_user.id == post.user_id %}
+        <div class="text-end mt-3 pt-3" style="border-top: 1px solid rgba(167,139,250,0.15);">
+            <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="display:inline;"
+                  onsubmit="return confirm('确定要删除这个帖子吗？操作不可撤销。')">
+                <button type="submit" class="btn btn-danger" style="border-radius:20px; padding:6px 20px; font-size:0.9rem;">
+                    <i class="bi bi-trash3"></i> 删除帖子
+                </button>
+            </form>
+        </div>
+        {% endif %}
     </div>
 </div>
 
@@ -58,7 +68,7 @@
                 <div class="d-flex">
                     <img src="{{ url_for('static', filename='uploads/avatars/' + comment.author.avatar) }}"
                          class="avatar-img me-2" width="32" height="32"
-                         onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ comment.author.username }}'">
+                         onerror="this.src='https://api.dicebear.com/8.x/bottts/svg?seed={{ comment.author.nickname or comment.author.username }}'">
                     <div class="flex-grow-1">
                         <strong style="color: #2d1b4e;">{{ comment.author.nickname or comment.author.username }}</strong>
                         <small style="color: #7b6b9e;" class="ms-2">{{ comment.created_at.strftime('%m-%d %H:%M') }}</small>

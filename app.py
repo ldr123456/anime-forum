@@ -1,5 +1,6 @@
 import os
 import uuid
+from functools import wraps
 from flask import Flask, render_template, redirect, url_for, flash, request, jsonify, session
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.utils import secure_filename
@@ -33,6 +34,18 @@ def save_avatar(file):
         img.save(filepath)
         return filename
     return None
+
+# ==================== 权限装饰器 ====================
+
+def admin_required(f):
+    @wraps(f)
+    @login_required
+    def decorated_function(*args, **kwargs):
+        if not current_user.is_admin:
+            flash('此操作需要管理员权限。', 'danger')
+            return redirect(url_for('index'))
+        return f(*args, **kwargs)
+    return decorated_function
 
 # ==================== 路由 ====================
 
@@ -169,7 +182,7 @@ def profile():
     return render_template('profile.html', posts=user_posts)
 
 @app.route('/create_category', methods=['GET', 'POST'])
-@login_required
+@admin_required
 def create_category():
     if request.method == 'POST':
         name = request.form.get('name', '').strip()
@@ -189,6 +202,29 @@ def create_category():
             flash(f'分类「{name}」创建成功！', 'success')
             return redirect(url_for('index'))
     return render_template('create_category.html')
+
+@app.route('/post/<int:post_id>/delete', methods=['POST'])
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.user_id != current_user.id:
+        flash('你只能删除自己的帖子。', 'danger')
+        return redirect(url_for('view_post', post_id=post.id))
+    cat_id = post.category_id
+    db.session.delete(post)
+    db.session.commit()
+    flash('帖子已删除。', 'info')
+    return redirect(url_for('category', cat_id=cat_id))
+
+@app.route('/category/<int:cat_id>/delete', methods=['POST'])
+@admin_required
+def delete_category(cat_id):
+    cat = Category.query.get_or_404(cat_id)
+    name = cat.name
+    db.session.delete(cat)
+    db.session.commit()
+    flash(f'分类「{name}」及其下所有帖子已删除。', 'info')
+    return redirect(url_for('index'))
 
 @app.route('/api/theme', methods=['POST'])
 @login_required
