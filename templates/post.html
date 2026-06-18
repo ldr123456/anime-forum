@@ -31,7 +31,7 @@
         <h3 class="gradient-text mb-3">{{ post.title }}</h3>
         <hr style="border-color: rgba(167,139,250,0.2);">
         <div style="white-space: pre-wrap; line-height: 1.9; color: #2d1b4e;">{{ post.content }}</div>
-        {% if current_user.is_authenticated and current_user.id == post.user_id %}
+        {% if current_user.is_authenticated and (current_user.id == post.user_id or current_user.is_admin) %}
         <div class="text-end mt-3 pt-3" style="border-top: 1px solid rgba(167,139,250,0.15);">
             <form method="POST" action="{{ url_for('delete_post', post_id=post.id) }}" style="display:inline;"
                   onsubmit="return confirm('确定要删除这个帖子吗？操作不可撤销。')">

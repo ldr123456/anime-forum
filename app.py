@@ -207,7 +207,7 @@ def create_category():
 @login_required
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.user_id != current_user.id:
+    if post.user_id != current_user.id and not current_user.is_admin:
         flash('你只能删除自己的帖子。', 'danger')
         return redirect(url_for('view_post', post_id=post.id))
     cat_id = post.category_id
